@@ -68,6 +68,10 @@
             animation: fade-out 1s ease-out both;
         }
 
+        .p40 {
+            padding: .4rem 0;
+        }
+
         @keyframes fade-in {
             0% {
                 opacity: 0;
@@ -150,11 +154,11 @@
                 <option value="6.1">6.1</option>
                 <option value="6.2">6.2</option>
             </select>
-            <div style="padding: .4rem 0">
-            <label for="faststart">web video</label>
-            <input type="checkbox" id="faststart" name="faststart" value="true" class="vcodec" checked>
-            <label for="yuv420p">YUV 4:2:0 chroma subsampling (for dumb players)</label>
-            <input type="checkbox" id="yuv420p" name="yuv420p" value="true" class="vcodec" checked>
+            <div class="p40">
+                <label for="faststart">web video</label>
+                <input type="checkbox" id="faststart" name="faststart" value="true" class="vcodec" checked>
+                <label for="yuv420p">YUV 4:2:0 chroma subsampling (for dumb players)</label>
+                <input type="checkbox" id="yuv420p" name="yuv420p" value="true" class="vcodec" checked>
             </div>
             <div>
                 <h3>filters</h3>
