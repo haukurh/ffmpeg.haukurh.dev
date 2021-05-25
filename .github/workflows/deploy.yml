@@ -1,10 +1,8 @@
-name: Deploy
+name: Deploy to S3 site
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ $default-branch ]
+  release:
+    types: [created]
 
 jobs:
   deploy:
@@ -47,4 +45,6 @@ jobs:
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
       - name: Clean up
-        run: rm files.json
+        run: |
+          rm synced-files.tmp
+          rm files.json
