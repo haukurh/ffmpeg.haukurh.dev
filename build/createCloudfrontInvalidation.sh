@@ -2,7 +2,7 @@
 
 if [ $# -lt 1 ]; then
   echo "Usage: $0 aws-s3-sync.output"
-  exit 1
+  exit 2
 fi
 
 TMP_FILE=$1
