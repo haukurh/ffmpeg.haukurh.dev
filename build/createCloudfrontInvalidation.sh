@@ -13,7 +13,7 @@ if [ ! -f $TMP_FILE ]; then
 fi
 
 # Account for /index.html files as well, (e.g. /index.html => /)
-grep -E "index.html$" $TMP_FILE | sed -E "s/index.html//" >> $TMP_FILE
+grep "index.html" $TMP_FILE | sed -E "s/index.html//" >> $TMP_FILE
 
 FILES_JSON=$(cat $TMP_FILE | jq -Rs 'split("\n")' | jq -rcS '[.[] | select(length > 0) | gsub("^\\s+|\\s+$";"")]')
 FILES_LENGTH=$(cat $TMP_FILE| jq -Rs 'split("\n")' | jq -rcS '[.[] | select(length > 0) | gsub("^\\s+|\\s+$";"")] | length')
