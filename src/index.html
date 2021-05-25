@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ffmpeg generator</title>
+    <title>FFmpeg generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="An online web app that helps you build ffmpeg commands......">
+    <meta name="description" content="Web app that helps you build FFmpeg commands, with some sensible defaults for web videos">
     <style>
         * {
             box-sizing: border-box;
@@ -33,6 +33,9 @@
             left: 0;
             right: 0;
             pointer-events: none;
+        }
+        .subtitle {
+            font-size: .6rem;
         }
 
         .message {
@@ -78,11 +81,11 @@
 <body>
 
 <main>
-    <h1>ffmpeg generator</h1>
+    <h1>FFmpeg generator</h1>
     <form id="ffmpeg">
         <label for="input">Video clip</label>
         <input type="file" id="input" name="input">
-        <span id="meta"></span>
+        <div><span class="subtitle">Drag your video file here</span></div>
         <div class="video">
             <h2>Video</h2>
             <label for="vcodec">codec:</label>
