@@ -24,5 +24,12 @@ jobs:
 
       - name: Copy files to S3 bucket
         run: |
-          aws s3 sync src/ s3://ffmpeg.haukurh.dev/ --exclude="*" --include="*/" --include="*.html" --cache-control="max-age=86400"
-          aws s3 sync src/ s3://ffmpeg.haukurh.dev/ --cache-control="max-age=2592000" --delete
+          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400" | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          touch files.json
+          ./build/createCloudfrontInvalidation.sh synced-files.tmp
+          aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
+          rm files.json
+        env:
+          AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
