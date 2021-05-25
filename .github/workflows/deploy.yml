@@ -40,7 +40,7 @@ jobs:
         id: modified
         run: COUNT=$(jq '.Paths.Quantity' files.json) && echo "::set-output name=COUNT::$COUNT"
       - name: CloudFront invalidation
-        if: steps.main.modified.COUNT != 0
+        if: steps.modified.outputs.COUNT != 0
         run: aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
