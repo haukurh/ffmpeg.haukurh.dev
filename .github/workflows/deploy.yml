@@ -37,6 +37,8 @@ jobs:
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
           echo "dist: $AWS_CLOUDFRONT_DIST"
+          cat synced-files.tmp
+          cat files.json
           aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
           rm files.json
         env:
