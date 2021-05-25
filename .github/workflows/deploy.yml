@@ -25,15 +25,19 @@ jobs:
       - name: Copy HTML files to S3 bucket
         run: |
           aws s3 sync src/ s3://$AWS_S3_BUCKET/ --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400" | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
       - name: Copy other files to S3 bucket
         run: |
           aws s3 sync src/ s3://$AWS_S3_BUCKET/ --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
       - name: CloudFront invalidation
         run: |
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
+          echo "dist: $AWS_CLOUDFRONT_DIST"
           aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
           rm files.json
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
