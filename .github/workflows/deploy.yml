@@ -24,12 +24,14 @@ jobs:
 
       - name: Copy HTML files to S3 bucket
         run: |
-          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400" | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --size-only --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400" | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          cat synced-files.tmp
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
       - name: Copy other files to S3 bucket
         run: |
-          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          aws s3 sync src/ s3://$AWS_S3_BUCKET/ --size-only --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+          cat synced-files.tmp
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
       - name: Prepare CloudFront batch invalidation
