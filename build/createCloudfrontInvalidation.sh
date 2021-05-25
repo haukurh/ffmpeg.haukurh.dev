@@ -13,9 +13,9 @@ if [ ! -f $TMP_FILE ]; then
 fi
 
 SYNCED_FILES=$(cat synced-files.tmp)
-FILES_JSON=$(cat $TMP_FILE | jq -R -s -c 'split("\n")' | jq '[.[] | select(length > 0)]')
-FILES_LENGTH=$(cat $TMP_FILE | jq -R -s -c 'split("\n")' | jq '[.[] | select(length > 0)] | length')
+FILES_JSON=$(cat $TMP_FILE | jq -R -s -c 'split("\r\n")' | jq '[.[] | select(length > 0)]')
+FILES_LENGTH=$(cat $TMP_FILE | jq -R -s -c 'split("\r\n")' | jq '[.[] | select(length > 0)] | length')
 
-JSON="{\"Paths\": {\"Quantity\": $FILES_LENGTH,\"Items\": $FILES_JSON},\"CallerReference\": \"github-action\"}"
+JSON="{\"Paths\": {\"Quantity\": $FILES_LENGTH,\"Items\": $FILES_JSON},\"CallerReference\": \"github-action-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER\"}"
 
 echo $JSON >> files.json
