@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ffmpeg generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An online web app that helps you build ffmpeg commands...">
     <style>
         * {
             box-sizing: border-box;
@@ -18,7 +19,7 @@
             min-height: 100vh;
         }
         main {
-            margin: 0 auto;
+            margin: 3rem auto;
             max-width: 920px;
         }
         #messages {
@@ -79,6 +80,7 @@
 <main>
     <h1>ffmpeg generator</h1>
     <form id="ffmpeg">
+        <label for="input">Video clip</label>
         <input type="file" id="input" name="input">
         <span id="meta"></span>
         <div class="video">
