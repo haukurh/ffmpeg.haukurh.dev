@@ -19,8 +19,15 @@
             min-height: 100vh;
         }
         main {
-            margin: 3rem auto;
+            margin: 0 auto;
+            padding: 1rem;
             max-width: 920px;
+        }
+        footer {
+            text-align: center;
+            font-size: .8rem;
+            font-style: italic;
+            padding: 2rem 0;
         }
         #messages {
             position: fixed;
@@ -36,6 +43,10 @@
         }
         .subtitle {
             font-size: .6rem;
+        }
+        #cli {
+            display: block;
+            margin: 1rem 0;
         }
 
         .message {
@@ -209,6 +220,7 @@
         </div>
     </form>
 </main>
+<footer>Check this project on <a href="https://github.com/haukurh/ffmpeg.haukurh.dev" target="_blank" rel="noreferrer">github</a></footer>
 <div id="messages"></div>
 
 <script src="https://cdn.haukurh.dev/moov/v0.0.1/moov-min.js"></script>
