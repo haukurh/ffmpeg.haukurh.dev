@@ -24,4 +24,5 @@ jobs:
 
       - name: Copy files to S3 bucket
         run: |
-          aws s3 sync src/ s3://ffmpeg.haukurh.dev/
+          aws s3 sync src/ s3://ffmpeg.haukurh.dev/ --exclude="*" --include="*/" --include="*.html" --cache-control="max-age=86400"
+          aws s3 sync src/ s3://ffmpeg.haukurh.dev/ --cache-control="max-age=2592000" --delete
