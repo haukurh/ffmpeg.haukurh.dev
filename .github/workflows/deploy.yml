@@ -38,8 +38,11 @@ jobs:
         run: |
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
+      - name: Get modified files count
+        id: modified
+        run: COUNT=$(jq '.Paths.Quantity' files.json) && echo "::set-output name=COUNT::$COUNT"
       - name: CloudFront invalidation
-        if: ${{ $(jq '.Paths.Quantity' files.json) != "0" }}
+        if: steps.main.modified.COUNT != 0
         run: aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
