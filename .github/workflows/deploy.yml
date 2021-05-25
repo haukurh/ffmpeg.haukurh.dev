@@ -22,10 +22,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      - name: Copy files to S3 bucket
+      - name: Copy HTML files to S3 bucket
         run: |
           aws s3 sync src/ s3://$AWS_S3_BUCKET/ --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400" | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+      - name: Copy other files to S3 bucket
+        run: |
           aws s3 sync src/ s3://$AWS_S3_BUCKET/ --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
+      - name: CloudFront invalidation
+        run: |
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
           aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
