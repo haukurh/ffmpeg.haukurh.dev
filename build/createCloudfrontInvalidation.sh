@@ -13,8 +13,8 @@ if [ ! -f $TMP_FILE ]; then
 fi
 
 SYNCED_FILES=$(cat synced-files.tmp)
-FILES_JSON=$(cat $TMP_FILE | jq -Rs 'split("\n") | gsub("^\\s+|\\s+$";"")' | jq -rc '[.[] | select(length > 0)]')
-FILES_LENGTH=$(cat $TMP_FILE | jq -Rs 'split("\n") | gsub("^\\s+|\\s+$";"")' | jq -rc '[.[] | select(length > 0)] | length')
+FILES_JSON=$(cat $TMP_FILE | jq -Rs 'split("\n")' | jq -rc '[.[] | select(length > 0) | gsub("^\\s+|\\s+$";"")]')
+FILES_LENGTH=$(cat $TMP_FILE| jq -Rs 'split("\n")' | jq -rc '[.[] | select(length > 0) | gsub("^\\s+|\\s+$";"")] | length')
 
 JSON="{\"Paths\": {\"Quantity\": $FILES_LENGTH,\"Items\": $FILES_JSON},\"CallerReference\": \"github-action-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER\"}"
 
