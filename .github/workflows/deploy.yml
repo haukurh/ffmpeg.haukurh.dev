@@ -32,14 +32,14 @@ jobs:
           aws s3 sync src/ s3://$AWS_S3_BUCKET/ --cache-control="public,max-age=2592000" --delete | sed -e "s/.*$AWS_S3_BUCKET//" >> synced-files.tmp
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      - name: CloudFront invalidation
+      - name: Prepare CloudFront batch invalidation
         run: |
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
-          echo "dist: $AWS_CLOUDFRONT_DIST"
-          cat synced-files.tmp
-          cat files.json
+      - name: CloudFront invalidation
+        run: |
           aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
-          rm files.json
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
+      - name: Clean up
+        run: rm files.json
