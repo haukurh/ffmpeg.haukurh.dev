@@ -39,8 +39,8 @@ jobs:
           touch files.json
           ./build/createCloudfrontInvalidation.sh synced-files.tmp
       - name: CloudFront invalidation
-        run: |
-          aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
+        if: ${{ $(jq '.Paths.Quantity' files.json) != "0" }}
+        run: aws cloudfront create-invalidation --distribution-id "$AWS_CLOUDFRONT_DIST" --invalidation-batch file://files.json
         env:
           AWS_CLOUDFRONT_DIST: ${{ secrets.AWS_CLOUDFRONT_DIST }}
       - name: Clean up
