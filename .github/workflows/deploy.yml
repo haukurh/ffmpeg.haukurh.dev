@@ -1,8 +1,8 @@
 name: Deploy to S3 site
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [created]
 
 jobs:
   deploy:
@@ -34,7 +34,7 @@ jobs:
         with:
           directory: src/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
-          args: --cache-control="public,max-age=2592000" --delete
+          args: --size-only --cache-control="public,max-age=2592000" --delete
 
       - name: Prepare CloudFront invalidation batch
         id: cloudfront
