@@ -22,7 +22,7 @@ jobs:
 
       - name: Sync HTML files to S3 bucket
         id: s3_sync_html
-        uses: haukurh/aws-s3-sync-action@v1
+        uses: haukurh/aws-s3-sync-action@v1.0.1
         with:
           directory: src/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
@@ -30,7 +30,7 @@ jobs:
 
       - name: Sync other files to S3 bucket
         id: s3_sync_other
-        uses: haukurh/aws-s3-sync-action@v1
+        uses: haukurh/aws-s3-sync-action@v1.0.1
         with:
           directory: src/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
