@@ -232,7 +232,7 @@
 <footer>Check this project on <a href="https://github.com/haukurh/ffmpeg.haukurh.dev" target="_blank" rel="noreferrer">github</a></footer>
 <div id="messages"></div>
 
-<script src="https://cdn.haukurh.dev/moov/v0.0.1/moov-min.js"></script>
+<script src="https://cdn.haukurh.dev/moov/v0.0.1/moov-min.js" integrity="sha384-pkO4xD91SrjOTQ3soV4iHVIgix94ZQiuJjRiqgD47ZrNgR4bgrqB4fY7s+BukTm6" crossorigin="anonymous"></script>
 <script>
     const readFile = async (file) => {
         return new Promise((resolve, reject) => {
@@ -257,7 +257,7 @@
         const file = event.target.files[0];
         if (['video/quicktime', 'video/mp4'].includes(file.type)) {
             readFile(event.target.files[0]).then((file) => {
-                movie = moovAtom.readMovieAtom(file);
+                movie = moovAtomJS.readMovieAtom(file);
                 console.log(movie);
                 movie.tracks.forEach((track) => {
                     if (track.header && track.header.trackHeight) {
