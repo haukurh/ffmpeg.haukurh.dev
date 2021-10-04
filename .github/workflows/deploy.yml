@@ -26,7 +26,7 @@ jobs:
         with:
           directory: src/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
-          args: --size-only --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400"
+          args: --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400"
 
       - name: Sync other files to S3 bucket
         id: s3_sync_other
