@@ -213,6 +213,13 @@
                 <option value="eng">English</option>
             </select>
         </div>
+        <div class="trim">
+            <h2>Trim / cut</h2>
+            <label for="tstart">Start</label>
+            <input id="tstart" type="text" name="tstart" placeholder="00:00:00.000">
+            <label for="tstop">Stop</label>
+            <input id="tstop" type="text" name="tstop" placeholder="00:00:00.000">
+        </div>
         <div class="container">
             <h2>Format</h2>
             <label for="filename">filename</label>
@@ -422,6 +429,14 @@
         if (hasAudio) {
             command.push('-metadata:s:a:0');
             command.push(`language=${data.vlang}`);
+        }
+
+        if (data.tstart) {
+            command.push(`-ss ${data.tstart}`);
+        }
+
+        if (data.tstart && data.tstop) {
+            command.push(`-to ${data.tstop}`);
         }
 
         if (flags.length > 1) {
