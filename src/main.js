@@ -88,7 +88,7 @@ const handle = () => {
     const data = getFormData('ffmpeg');
     data.acodec = data.acodec === 'aac-ffmpeg' ? 'aac' : data.acodec;
 
-    let command = ['ffmpeg', '-i'];
+    let command = [preData.binary, '-i'];
     const flags = ['-flags'];
 
     if (data.filename.length === 0 && data.input && data.input.name.length > 0) {
