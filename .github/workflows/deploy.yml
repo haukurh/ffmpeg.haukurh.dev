@@ -47,13 +47,6 @@ jobs:
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
           args: --size-only --cache-control="public,max-age=2592000" --delete
 
-      - name: Prepare CloudFront invalidation batch
-        id: cloudfront
-        uses: haukurh/aws-cloudfront-invalidation-action@v1
-        with:
-          sync-output: "${{ steps.s3_sync_html.outputs.stdout }}${{ steps.s3_sync_other.outputs.stdout }}"
-          s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
-
       - name: Run CloudFront invalidation
         if: steps.cloudfront.outputs.quantity != 0
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DIST }} --invalidation-batch ${{ steps.cloudfront.outputs.json_escaped }}
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DIST }} --paths "/*"
