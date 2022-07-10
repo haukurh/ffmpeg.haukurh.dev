@@ -20,11 +20,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
       - name: Sync HTML files to S3 bucket
         id: s3_sync_html
         uses: haukurh/aws-s3-sync-action@v1.0.1
         with:
-          directory: src/
+          directory: dist/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
           args: --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400"
 
@@ -32,7 +43,7 @@ jobs:
         id: s3_sync_other
         uses: haukurh/aws-s3-sync-action@v1.0.1
         with:
-          directory: src/
+          directory: dist/
           s3-bucket: ${{ secrets.AWS_S3_BUCKET }}
           args: --size-only --cache-control="public,max-age=2592000" --delete
 
