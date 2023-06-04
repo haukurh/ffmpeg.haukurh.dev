@@ -1,36 +1,41 @@
-name: Deploy to S3 site
+name: Deploy site
 
 on:
   release:
-    types: [created]
+    types: [ created ]
+  workflow_dispatch:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy site
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install
 
       - name: Build
         run: yarn build
 
-      - name: Sync HTML files to S3 bucket
-        run: aws s3 sync dist/ "s3://${{ vars.AWS_S3_BUCKET }}/" --exclude="*" --include="*/" --include="*.html" --cache-control="public,max-age=86400"
+      - name: Sync HTML files to the S3 bucket
+        run: aws s3 sync dist/ s3://${{ vars.AWS_S3_BUCKET }}/ --exclude=* --include=*.html --cache-control="public,max-age=86400"
 
       - name: Sync other files to S3 bucket
-        run: aws s3 sync dist/ "s3://${{ vars.AWS_S3_BUCKET }}/" --cache-control="public,max-age=2592000" --delete
+        run: aws s3 sync dist/ s3://${{ vars.AWS_S3_BUCKET }}/ --cache-control="public,max-age=2592000" --delete
 
       - name: Run CloudFront invalidation
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.AWS_CLOUDFRONT_DIST }} --paths "/*"
